@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Find movies</string>
+    <string name="history">History</string>
+    <string name="movie_title">Movie title</string>
+    <string name="search">Search</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+</resources>
