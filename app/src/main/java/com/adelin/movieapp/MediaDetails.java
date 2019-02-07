@@ -1,11 +1,14 @@
 package com.adelin.movieapp;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.adelin.movieapp.utils.MediaInfo;
 import com.adelin.movieapp.utils.NetData;
@@ -25,10 +28,14 @@ public class MediaDetails extends AppCompatActivity {
     private Button addToFavButton;
     private MediaInfo mediaInfo;
 
+    private ClipboardManager clipboardManager;
+    private ClipData clipData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_details);
+        clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
         setValues();
 
@@ -36,6 +43,7 @@ public class MediaDetails extends AppCompatActivity {
         String IMDBcode = intent.getStringExtra(MainActivity.MOVIE_CODE);
 
         showMovieDetails(IMDBcode);
+        setActions();
     }
 
     private void setValues() {
@@ -46,6 +54,16 @@ public class MediaDetails extends AppCompatActivity {
         this.plot = findViewById(R.id.plotText);
         this.cast = findViewById(R.id.castText);
         this.addToFavButton = findViewById(R.id.addToFaved);
+    }
+
+    private void setActions(){
+        title.setOnLongClickListener((view)->{
+            clipData = ClipData.newPlainText("text", title.getText());
+            clipboardManager.setPrimaryClip(clipData);
+            Toast toast = Toast.makeText(this, "Copied to clipboard", Toast.LENGTH_SHORT);
+            toast.show();
+            return true;
+        });
     }
 
     private void showMovieDetails(String movieCode) {

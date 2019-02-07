@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
-
     }
 
     @Override
@@ -101,9 +100,24 @@ public class MainActivity extends AppCompatActivity {
             case R.id.historyButton:
                 historyButtonHandler();
                 return true;
-            default:
+            case R.id.closeApp:
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
                 return true;
+            case R.id.fav:
+                //TODO Faved list
+                //TODO Time watched
+                //TODO Watched List/Button
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Toast.makeText(MainActivity.this, " was selected", Toast.LENGTH_LONG).show();
+        return true;
     }
 
     @Override
@@ -171,4 +185,5 @@ public class MainActivity extends AppCompatActivity {
         });
         thread.start();
     }
+
 }

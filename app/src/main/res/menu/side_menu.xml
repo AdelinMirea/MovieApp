@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sideMenu"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/fav"
-        android:title="Favourites">
+        android:title="Favourites"
+        app:showAsAction="never"
+        android:onClick="onOptionsItemSelected"/>
 
-    </item>
     <item
-        android:id="@+id/close"
-        android:title="Close">
-
-    </item>
+        android:id="@+id/closeApp"
+        android:title="Close"
+        app:showAsAction="never"
+        android:onClick="onOptionsItemSelected"/>
 </menu>
