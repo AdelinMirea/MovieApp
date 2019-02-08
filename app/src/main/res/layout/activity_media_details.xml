@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -27,13 +26,13 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toTopOf="parent" />
+        <!--app:srcCompat="@drawable/ic_launcher_foreground"-->
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="234dp"
-        android:layout_height="69dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
@@ -53,7 +52,7 @@
 
     <TextView
         android:id="@+id/ratingText"
-        android:layout_width="111dp"
+        android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
@@ -64,31 +63,27 @@
     <TextView
         android:id="@+id/plotText"
         android:layout_width="369dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="@+id/cover"
         app:layout_constraintTop_toBottomOf="@+id/cover" />
 
     <TextView
         android:id="@+id/castText"
         android:layout_width="369dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/plotText"
         app:layout_constraintTop_toBottomOf="@+id/plotText" />
 
     <Button
         android:id="@+id/addToFaved"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="32dp"
-        android:text="Add to Favourites"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/castText" />
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@drawable/ic_favourite"
+        android:text="Add"
+        app:layout_constraintStart_toStartOf="@+id/castText"
+        app:layout_constraintTop_toBottomOf="@+id/castText"
+        android:drawableStart="@drawable/ic_favourite" />
 </android.support.constraint.ConstraintLayout>

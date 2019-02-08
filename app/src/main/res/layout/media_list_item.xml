@@ -9,22 +9,23 @@
     <TextView
         android:id="@+id/mediaTitle"
         android:layout_width="242dp"
-        android:layout_height="67dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:textSize="19dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/mediaCover"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mediaYear"
         android:layout_width="129dp"
         android:layout_height="25dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="128dp"
-        android:layout_marginRight="128dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/mediaTitle"
         app:layout_constraintTop_toBottomOf="@+id/mediaTitle" />
 
     <ImageView
