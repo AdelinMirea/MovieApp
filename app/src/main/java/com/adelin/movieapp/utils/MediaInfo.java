@@ -1,6 +1,8 @@
 package com.adelin.movieapp.utils;
 
-public class MediaInfo {
+import java.io.Serializable;
+
+public class MediaInfo implements Serializable {
     private String title;
     private String year;
     private String IMDBCode;
@@ -8,7 +10,7 @@ public class MediaInfo {
     private String rating;
     private String plot;
     private String actors;
-    private String gerne;
+    private String genre;
 
     public MediaInfo(String title, String year, String code, String posterLink){
         this.title = title;
@@ -17,7 +19,7 @@ public class MediaInfo {
         this.posterLink = posterLink;
     }
 
-    public MediaInfo(String title, String year, String IMDBCode, String posterLink, String rating, String plot, String actors, String gerne) {
+    public MediaInfo(String title, String year, String IMDBCode, String posterLink, String rating, String plot, String actors, String genre) {
         this.title = title;
         this.year = year;
         this.IMDBCode = IMDBCode;
@@ -25,7 +27,7 @@ public class MediaInfo {
         this.rating = rating;
         this.plot = plot;
         this.actors = actors;
-        this.gerne = gerne;
+        this.genre = genre;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class MediaInfo {
         return actors;
     }
 
-    public String getGerne() {
-        return gerne;
+    public String getGenre() {
+        return genre;
     }
 }

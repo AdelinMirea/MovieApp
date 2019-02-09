@@ -42,6 +42,6 @@ public class ListItem {
         toast.show();
 
         stringArrayList.remove(content);
-        ((CustomArrayAdapter<String>)arrayAdapter).notifyDataSetChanged(stringArrayList);
+        arrayAdapter.notifyDataSetChanged(stringArrayList);
     }
 }

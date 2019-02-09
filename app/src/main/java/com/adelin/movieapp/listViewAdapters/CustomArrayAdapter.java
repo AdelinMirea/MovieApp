@@ -15,17 +15,17 @@ public class CustomArrayAdapter<T> extends ArrayAdapter<T> {
     public CustomArrayAdapter(Context context, int resource, int textViewResourceId, List<T> objects) {
         super(context, resource, textViewResourceId, objects);
         repository = new InFileRepository(getContext());
-        repository.loadHistory((ArrayList<String>) objects);
+        repository.loadData((ArrayList<String>) objects);
         super.notifyDataSetChanged();
     }
 
     public void save(ArrayList<String> arrayList){
-        repository.saveHistory(arrayList);
+        repository.saveData(arrayList);
     }
 
     public void notifyDataSetChanged(ArrayList<String> arrayList) {
         super.notifyDataSetChanged();
-        repository.saveHistory(arrayList);
+        repository.saveData(arrayList);
     }
 }
 

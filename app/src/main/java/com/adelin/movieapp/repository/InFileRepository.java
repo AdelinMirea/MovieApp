@@ -12,14 +12,15 @@ import java.util.Arrays;
 public class InFileRepository {
     private String fileName;
     private Context context;
+    //TODO set file name as a parameter
     public InFileRepository(Context context){
-        fileName = "history.txt";
+        this.fileName = "history.txt";
         this.context = context;
     }
 
-    public void loadHistory(ArrayList<String> stringArrayList){
+    public void loadData(ArrayList<String> stringArrayList){
         try{
-            FileInputStream fin = context.openFileInput("history.txt");
+            FileInputStream fin = context.openFileInput(fileName);
             int c;
             StringBuilder temp= new StringBuilder();
             while( (c = fin.read()) != -1){
@@ -35,9 +36,9 @@ public class InFileRepository {
     }
 
 
-    public void saveHistory(ArrayList<String> stringArrayList){
+    public void saveData(ArrayList<String> stringArrayList){
         try{
-            FileOutputStream fos = context.openFileOutput("history.txt", Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             for (String string : stringArrayList) {
                 fos.write(string.getBytes());
                 fos.write("`".getBytes());

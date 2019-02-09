@@ -107,6 +107,10 @@ public class SaveUserData {
             e.printStackTrace();
         }
 
+        loadImage();
+    }
+
+    private void loadImage() {
         try(FileInputStream fis = context.openFileInput(photoFile)){
             File file = new File(photoFile);
             if(file.exists()){

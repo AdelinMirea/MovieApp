@@ -95,7 +95,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         createSlidingMenu();
     }
 
-
+    /**
+     * creating the slide menu and getting references to its items
+     */
     private void createSlidingMenu() {
         drawerLayout = findViewById(R.id.drawer);
 
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userPhoto = header.findViewById(R.id.user_photo);
         userPhoto.setOnClickListener(this::imageChoose);
-        if(userData.getPhoto()!=null){
+        if (userData.getPhoto() != null) {
             userPhoto.setImageBitmap(userData.getPhoto());
         }
         userName = header.findViewById(R.id.user_name);
@@ -128,6 +130,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * switching the buttons for the menu buttons
+     *
+     * @param item menuitem selected
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
@@ -142,21 +150,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         Toast.makeText(MainActivity.this, " was selected", Toast.LENGTH_LONG).show();
         return true;
     }
 
+    /**
+     * getting data when coming back from another intent
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            movieTitle.setText(data.getStringExtra(MOVIE_TITLE));
+            movieTitle.setText(Objects.requireNonNull(data).getStringExtra(MOVIE_TITLE));
             historyStringArrayList.clear();
             historyStringArrayList.addAll(data.getStringArrayListExtra(HISTORY_ARRAY));
         }
-        if(resultCode == RESULT_OK){
-            if(requestCode == PICK_FROM_FILE){
+        if (resultCode == RESULT_OK) {
+            if (requestCode == PICK_FROM_FILE) {
                 Uri dataUri = Objects.requireNonNull(data).getData();
 
                 try {
@@ -172,6 +188,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * handling tap on a movie item on the search list
+     *
+     * @param adaptiveView
+     * @param view
+     * @param position
+     * @param id
+     */
     private void onMovieClickedHandler(View adaptiveView, View view, int position, long id) {
         Toast toast = Toast.makeText(this, mediaInfoArrayList.get(position).getTitle(), Toast.LENGTH_LONG);
         toast.show();
@@ -180,12 +204,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivityForResult(intent, 2);
     }
 
+    /**
+     * handling long tap on an item in the search list
+     *
+     * @param adaptiveView
+     * @param view
+     * @param position
+     * @param id
+     * @return
+     */
     private boolean onLongMovieClickedHandler(View adaptiveView, View view, int position, long id) {
         Toast toast = Toast.makeText(this, mediaInfoArrayList.get(position).getTitle(), Toast.LENGTH_LONG);
         toast.show();
         return true;
     }
 
+    /**
+     * handler for history button
+     * to change to the history page
+     */
     private void historyButtonHandler() {
         Intent historyIntent = new Intent(this, HistoryActivity.class);
         historyIntent.putExtra(HISTORY_ARRAY, historyStringArrayList);
@@ -196,9 +233,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return context;
     }
 
-    private boolean historyContainsTitle(String title){
+    /**
+     * extra methot to check the presence of an item in history array
+     *
+     * @param title string representing the search input
+     * @return true if it is present in history, false otherwise
+     */
+    private boolean historyContainsTitle(String title) {
         for (String s : historyStringArrayList) {
-            if(s.toLowerCase().equals(title.toLowerCase())){
+            if (s.toLowerCase().equals(title.toLowerCase())) {
                 return true;
             }
         }
@@ -239,6 +282,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         thread.start();
     }
 
+    /**
+     * handling side menu buttons
+     *
+     * @param menuItem selected menu item from the side menu
+     * @return always true
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
@@ -260,6 +309,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * check if the side menu is open, then close
+     * otherwise, call super
+     */
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -269,6 +322,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * handling dialog edit texts and setting save button handler
+     *
+     * @param v
+     */
     public void onItemClick(View v) {
         Dialog thisDialog = new Dialog(this);
         thisDialog.setContentView(R.layout.dialog_change_name);
@@ -282,26 +340,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         saveDialogButton = thisDialog.findViewById(R.id.save_doalog_button);
-        ArrayList<String> nameMail = new ArrayList<>();
-        saveDialogButton.setOnClickListener((vi) -> {
-            if (dialogName.getText().toString().equals("") || dialogMail.getText().toString().equals("")) {
-                Toast.makeText(this, "Cannot be empty", Toast.LENGTH_LONG).show();
-            } else {
-                nameMail.add(dialogName.getText().toString());
-                nameMail.add(dialogMail.getText().toString());
-
-                userName.setText(nameMail.get(0));
-                userMail.setText(nameMail.get(1));
-
-                userData.update(userName.getText().toString(), userMail.getText().toString());
-
-                Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
-                thisDialog.cancel();
-            }
-        });
+        saveDialogButton.setOnClickListener((vi) -> dialogSaveButtonHandler(dialogName, dialogMail, thisDialog));
     }
 
-    private void imageChoose(View view){
+    /**
+     * save button handler, making changes on side menu as well
+     *
+     * @param dialogName edit text on the dialog representing user's name
+     * @param dialogMail edit text on the dialog representing user's mail
+     * @param thisDialog the dialog in which the user inserts their data
+     */
+    private void dialogSaveButtonHandler(EditText dialogName, EditText dialogMail, Dialog thisDialog) {
+        if (dialogName.getText().toString().equals("") || dialogMail.getText().toString().equals("")) {
+            Toast.makeText(this, "Cannot be empty", Toast.LENGTH_LONG).show();
+        } else {
+            userName.setText(dialogName.getText().toString());
+            userMail.setText(dialogMail.getText().toString());
+
+            userData.update(userName.getText().toString(), userMail.getText().toString());
+
+            Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT).show();
+            thisDialog.cancel();
+        }
+
+    }
+
+    /**
+     * starting an action to pick an image from gallery 
+     * @param view
+     */
+    private void imageChoose(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK);
         File pictureDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
         Uri data = Uri.parse(pictureDir.getPath());

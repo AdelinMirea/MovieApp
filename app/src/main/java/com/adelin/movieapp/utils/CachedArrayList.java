@@ -7,33 +7,36 @@ import com.adelin.movieapp.repository.InFileRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Array list of strings that stores the data and reloads it
+ */
 public class CachedArrayList extends ArrayList<String> {
 
     private InFileRepository repository;
 
     public CachedArrayList(Context context){
         this.repository = new InFileRepository(context);
-        repository.loadHistory(this);
+        repository.loadData(this);
     }
 
     @Override
     public boolean add(String t) {
         boolean rspv =  super.add(t);
-        repository.saveHistory(this);
+        repository.saveData(this);
         return rspv;
     }
 
     @Override
     public boolean remove(Object obj){
         boolean rspv = super.remove(obj);
-        repository.saveHistory(this);
+        repository.saveData(this);
         return rspv;
     }
 
     @Override
     public void clear(){
         super.clear();
-        repository.saveHistory(this);
+        repository.saveData(this);
     }
 
     @Override

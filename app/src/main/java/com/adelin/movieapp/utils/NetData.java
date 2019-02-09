@@ -15,6 +15,13 @@ public class NetData {
 
     private static ArrayList<MediaInfo> mediaInfos = new ArrayList<>();
 
+    /**
+     * method used to get info about movies searching by title
+     * @param title movie title
+     * @return string consisting of movie info such as title, year, IMDBID, posterlink
+     * @throws IOException
+     * @throws JSONException
+     */
     public static String accesData(String title) throws IOException, JSONException {
 
         URL url = new URL("https://www.omdbapi.com/?apikey=ea34e38a&s="+title);
@@ -40,6 +47,12 @@ public class NetData {
         return parseJson(stringBuffer.toString());
     }
 
+    /**
+     * parsing a json string to get the necessary info
+     * @param jsonString json string got from the request
+     * @return string consisting of movie infos
+     * @throws JSONException
+     */
     private static String parseJson(String jsonString) throws JSONException {
         mediaInfos.clear();
         JSONObject object = new JSONObject(jsonString);
@@ -55,10 +68,20 @@ public class NetData {
         return stringBuilder.toString();
     }
 
+    /**
+     *
+     * @return array list with all the movies got from searching by title
+     */
     public static ArrayList<MediaInfo> getMediaInfos() {
         return mediaInfos;
     }
 
+    /**
+     *
+     * @param movieCode IMDB code
+     * @return mediaInfo object with filled with data about specified movie
+     * @throws IOException
+     */
     public static MediaInfo getMediaInfo(String movieCode) throws IOException {
         URL url = new URL("https://www.omdbapi.com/?apikey=ea34e38a&i=" + movieCode);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -83,6 +106,11 @@ public class NetData {
         return createMediaInfoFromJson(stringBuilder.toString());
     }
 
+    /**
+     *
+     * @param json json string og one single movie
+     * @return mediaInfo object with details set
+     */
     private static MediaInfo createMediaInfoFromJson(String json){
         try {
             JSONObject object = new JSONObject(json);
