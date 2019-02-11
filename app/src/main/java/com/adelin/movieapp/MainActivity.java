@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Button searchButton;
     private EditText movieTitle;
     private ListView list;
-    private CachedArrayList historyStringArrayList;
+    private CachedArrayList<String> historyStringArrayList;
     private ArrayList<MediaInfo> mediaInfoArrayList;
     private MediaInfoArrayAdapter mediaInfoArrayAdapter;
     private TextView userName;
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         userData = new SaveUserData(this);
-        historyStringArrayList = new CachedArrayList(this);
+        historyStringArrayList = new CachedArrayList<>(this, "history");
 
         mediaInfoArrayList = new ArrayList<>();
         mediaInfoArrayAdapter = new MediaInfoArrayAdapter(this, R.layout.media_list_item, mediaInfoArrayList);
@@ -115,13 +115,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         userPhoto = header.findViewById(R.id.user_photo);
         userPhoto.setOnClickListener(this::imageChoose);
-        if (userData.getPhoto() != null) {
-            userPhoto.setImageBitmap(userData.getPhoto());
+        if (userData.getUser().getPhoto() != null) {
+            userPhoto.setImageBitmap(userData.getUser().getPhoto());
         }
         userName = header.findViewById(R.id.user_name);
         userMail = header.findViewById(R.id.user_email);
-        userName.setText(userData.getUserName());
-        userMail.setText(userData.getUserMail());
+        userName.setText(userData.getUser().getUserName());
+        userMail.setText(userData.getUser().getUserMail());
     }
 
     @Override
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * starting an action to pick an image from gallery 
+     * starting an action to pick an image from gallery
      * @param view
      */
     private void imageChoose(View view) {

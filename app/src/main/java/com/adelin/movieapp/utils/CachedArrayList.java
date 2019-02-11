@@ -10,17 +10,21 @@ import java.util.Collection;
 /**
  * Array list of strings that stores the data and reloads it
  */
-public class CachedArrayList extends ArrayList<String> {
+public class CachedArrayList<T> extends ArrayList<T> {
 
-    private InFileRepository repository;
+    private InFileRepository<T> repository;
 
-    public CachedArrayList(Context context){
-        this.repository = new InFileRepository(context);
-        repository.loadData(this);
+    public CachedArrayList(Context context, String fileName){
+        this.repository = new InFileRepository<>(context, fileName);
+        this.clone(repository.loadData());
+    }
+
+    private void clone(ArrayList<T> loadData) {
+        this.addAll(loadData);
     }
 
     @Override
-    public boolean add(String t) {
+    public boolean add(T t) {
         boolean rspv =  super.add(t);
         repository.saveData(this);
         return rspv;
@@ -35,15 +39,16 @@ public class CachedArrayList extends ArrayList<String> {
 
     @Override
     public void clear(){
-        super.clear();
         repository.saveData(this);
+        super.clear();
     }
 
     @Override
-    public boolean addAll(Collection<? extends String> c) {
-        for (String s : c) {
-            this.add(s);
+    public boolean addAll(Collection<? extends T> c) {
+        for (T s : c) {
+            super.add(s);
         }
+        repository.saveData(this);
         return true;
     }
 }

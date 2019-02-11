@@ -3,46 +3,44 @@ package com.adelin.movieapp.repository;
 import android.content.Context;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class InFileRepository {
+public class InFileRepository<T> implements Serializable {
     private String fileName;
-    private Context context;
-    //TODO set file name as a parameter
-    public InFileRepository(Context context){
-        this.fileName = "history.txt";
+    private transient Context context;
+
+    public InFileRepository(Context context, String fileName){
+        this.fileName = fileName;
         this.context = context;
     }
 
-    public void loadData(ArrayList<String> stringArrayList){
+    public ArrayList<T> loadData(){
         try{
+            ArrayList<T> collection = new ArrayList<>();
             FileInputStream fin = context.openFileInput(fileName);
-            int c;
-            StringBuilder temp= new StringBuilder();
-            while( (c = fin.read()) != -1){
-                temp.append(Character.toString((char) c));
-            }
-            String[] arr = temp.toString().split("`");
-            stringArrayList.addAll(Arrays.asList(arr));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            collection = (ArrayList<T>) ois.readObject();
+            ois.close();
+            fin.close();
+            return collection;
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
+        return new ArrayList<>();
     }
 
 
-    public void saveData(ArrayList<String> stringArrayList){
+    public void saveData(ArrayList<T> collection){
         try{
             FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-            for (String string : stringArrayList) {
-                fos.write(string.getBytes());
-                fos.write("`".getBytes());
-            }
+            ObjectOutputStream ous = new ObjectOutputStream(fos);
+            ous.writeObject(collection);
+            ous.close();
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
